@@ -6,5 +6,5 @@ const blogsRoute = require('./routes/blogs');
 app.use('/blogs', blogsRoute);
 
 app.listen(port, () => {
-    console.log(`App listening at POrt: ${port}`);
+    console.log(`App listening at Port: ${port}`);
 });

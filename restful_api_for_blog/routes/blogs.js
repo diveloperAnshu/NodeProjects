@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const blogPost = [
+let blogPost = [
     {
         id: 1, 
         text : "you are a good person",
@@ -14,7 +14,7 @@ const blogPost = [
     }
 ];
 
-const blogsId = 3;
+let blogsId = 3;
 
 
 // the below code is for viewing all the blogs at once;
@@ -31,13 +31,13 @@ router.post("/", (req, res) => {
             message : "No text in the blog",
         });
     } else {
-        new blog = {
+        const newBlog = {
             id : blogsId++,
             text : newText,
             likes : 0
         }
 
-        blogPost.push(blog);
+        blogPost.push(newBlog);
         res.status(200).json({
             message : "Your new blog has been added to the blog list"
         });
@@ -59,7 +59,7 @@ router.patch("/:id", (req, res) => {
             findId.text = textBody;
         }
         if(likeBody !== undefined) {
-            findId.likes = likeBody
+            findId.likes = findId.likes + likeBody
         }
         res.status(201).json({
             message : "The blogPost has been Updated!"
@@ -67,11 +67,22 @@ router.patch("/:id", (req, res) => {
     }
 });
 
-// dedlete a blogPost which is existing
+// delete a blogPost which is existing
 
 router.delete("/:id", (req, res) => {
     const id = parseInt(req.params.id);
+    const findId = blogPost.findIndex(t => t.id === id);
+    if(findId === -1) {
+        res.status(400).json({
+            message : "The blog requested is not present in the blogPost!"
+        });
+    } else {
+        blogPost.splice(findId, 1);
+        res.status(204).json({
+            message : "deleted"
+        });
+    }
 })
 
 
-module.exports = router
+module.exports = router;
